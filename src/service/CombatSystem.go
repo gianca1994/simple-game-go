@@ -1,9 +1,9 @@
 package service
 
 import (
-	"crud-golang-sqlite/src/model"
 	"fmt"
 	. "github.com/ymzuiku/hit"
+	"simple-game-golang/src/model"
 )
 
 func CombatSystem(attacker model.User, defender model.User) {
