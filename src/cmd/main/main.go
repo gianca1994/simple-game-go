@@ -14,7 +14,11 @@ func main() {
 	r.Route("/users", func(r chi.Router) {
 		r.Get("/", routes.GetAllUsers)
 		r.Get("/{name}", routes.GetUserByName)
-		r.Post("/", routes.AddUser)
+	})
+
+	r.Route("/auth", func(r chi.Router) {
+		r.Post("/login", routes.Login)
+		r.Post("/register", routes.Register)
 	})
 
 	http.ListenAndServe(":8080", r)
