@@ -29,7 +29,9 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 
 	var users []model.User
 	db.Find(&users)
+
 	data, _ := json.Marshal(users)
+
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(data)
