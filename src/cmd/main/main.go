@@ -44,7 +44,6 @@ func main() {
 	*/
 
 	var user1, user2 model.User
-
 	db.First(&user1, "name = ?", "Gianca")
 	db.First(&user2, "name = ?", "lucho")
 
