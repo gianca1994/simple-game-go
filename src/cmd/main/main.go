@@ -28,12 +28,30 @@ func getAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Write(data)
 }
 
+func getUserByName(w http.ResponseWriter, r *http.Request) {
+	db := database.NewPostgreSQL()
+
+	if db == nil {
+		fmt.Println("Error connecting to database")
+		os.Exit(0)
+	}
+
+	name := chi.URLParam(r, "name")
+	var user model.User
+	db.Where("username = ?", name).First(&user)
+	data, _ := json.Marshal(user)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(data)
+}
+
 func main() {
 
 	r := chi.NewRouter()
 
 	r.Route("/users", func(r chi.Router) {
 		r.Get("/", getAllUsers)
+		r.Get("/{name}", getUserByName)
 	})
 
 	http.ListenAndServe(":8080", r)
