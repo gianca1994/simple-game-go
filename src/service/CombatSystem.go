@@ -6,29 +6,34 @@ import (
 	"simple-game-golang/src/model"
 )
 
-func CombatSystem(attacker model.User, defender model.User) {
+func CombatSystem(attacker, defender model.User) {
 	roundCounter := 0
+	var attackerDMG, defenderDMG = 0, 0
 
 	for attacker.Health > 0 && defender.Health > 0 {
 		roundCounter++
 		fmt.Printf("Round %d\n", roundCounter)
+		fmt.Printf(attacker.Name+" [Health: %d]\n", attacker.Health)
+		fmt.Printf(defender.Name+" [Health: %d\n", defender.Health)
 
-		defender.Health = Attack(attacker, defender)
+		defender.Health, attackerDMG = Attack(attacker, defender)
 		if defender.Health <= 0 {
+			defenderDMG = 0
 			break
 		}
 
-		attacker.Health = Attack(defender, attacker)
+		attacker.Health, defenderDMG = Attack(defender, attacker)
 		if attacker.Health <= 0 {
+			attackerDMG = 0
 			break
 		}
 
-		fmt.Println("Gianca: ", attacker)
-		fmt.Println("Lucho: ", defender)
+		fmt.Printf("Gianca: [Damage Caused: %d]\n", attackerDMG)
+		fmt.Printf("Lucho: [Damage Caused: %d]\n", defenderDMG)
 	}
 
-	fmt.Println("Gianca: ", attacker)
-	fmt.Println("Lucho: ", defender)
+	fmt.Printf("Gianca: [Health: %d, Damage Caused: %d]\n", attacker.Health, attackerDMG)
+	fmt.Printf("Lucho: [Health: %d, Damage Caused: %d]\n", defender.Health, defenderDMG)
 
 	winner := If(attacker.Health > 0, attacker.Name, defender.Name)
 	fmt.Println("The winner is: ", winner)

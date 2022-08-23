@@ -12,7 +12,7 @@ import (
 	"strconv"
 )
 
-func NewPostgreSQL() {
+func NewPostgreSQL() *gorm.DB {
 	projectName := regexp.MustCompile(`^(.*` + "simple-game-golang" + `)`)
 	currentWorkDirectory, _ := os.Getwd()
 	rootPath := projectName.Find([]byte(currentWorkDirectory))
@@ -41,18 +41,8 @@ func NewPostgreSQL() {
 
 	err = db.AutoMigrate(&model.User{})
 	if err != nil {
-		return
+		return nil
 	}
-	/*
-		db.Create(&model.User{
-			Name:       "Gianca",
-			DamageMax:  10,
-			DamageMin:  5,
-			Health:     50,
-			DefenseMax: 3,
-			DefenseMin: 1,
-		})
-	*/
 
 	/*
 		userSearch := model.User{}
@@ -60,5 +50,5 @@ func NewPostgreSQL() {
 		fmt.Println(test.Name)
 	*/
 
-	fmt.Println("Successfully migrated the database")
+	return db
 }
