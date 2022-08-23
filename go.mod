@@ -7,12 +7,16 @@ require github.com/ymzuiku/hit v0.0.0-20190525155149-18097f1d08f4
 require github.com/lib/pq v1.10.6
 
 require (
+	github.com/go-chi/chi/v5 v5.0.7
 	github.com/jinzhu/gorm v1.9.16
 	github.com/joho/godotenv v1.4.0
+	github.com/unrolled/render v1.5.0
 	gorm.io/driver/postgres v1.3.9
+	gorm.io/gorm v1.23.8
 )
 
 require (
+	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.12.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
@@ -24,6 +28,6 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
+	golang.org/x/sys v0.0.0-20220615213510-4f61da869c0c // indirect
 	golang.org/x/text v0.3.7 // indirect
-	gorm.io/gorm v1.23.8 // indirect
 )
