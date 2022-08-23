@@ -8,7 +8,7 @@ type User struct {
 	gorm.Model
 	Id                    int    `gorm:"primary_key" json:"id"`
 	Username              string `gorm:"type:varchar(100);unique_index" json:"username"`
-	Password              string `gorm:"type:varchar(255)" json:"-"`
+	Password              string `gorm:"type:varchar(255)" json:"password"`
 	Level                 int    `gorm:"not null" json:"level"`
 	Experience            int    `gorm:"not null" json:"experience"`
 	ExperienceToNextLevel int    `gorm:"not null" json:"experience_to_next_level"`
