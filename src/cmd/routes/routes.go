@@ -11,8 +11,6 @@ import (
 	"simple-game-golang/src/model"
 )
 
-
-
 func DbConnection() *gorm.DB {
 	db := database.NewPostgreSQL()
 
@@ -22,7 +20,6 @@ func DbConnection() *gorm.DB {
 	}
 	return db
 }
-
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	db := DbConnection()
@@ -46,4 +43,3 @@ func GetUserByName(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(data)
 }
-
