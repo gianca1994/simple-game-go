@@ -13,8 +13,8 @@ func CombatSystem(attacker, defender model.User) {
 	for attacker.Health > 0 && defender.Health > 0 {
 		roundCounter++
 		fmt.Printf("Round %d\n", roundCounter)
-		fmt.Printf(attacker.Name+" [Health: %d]\n", attacker.Health)
-		fmt.Printf(defender.Name+" [Health: %d\n", defender.Health)
+		fmt.Printf(attacker.Username+" [Health: %d]\n", attacker.Health)
+		fmt.Printf(defender.Username+" [Health: %d\n", defender.Health)
 
 		defender.Health, attackerDMG = Attack(attacker, defender)
 		if defender.Health <= 0 {
@@ -35,6 +35,6 @@ func CombatSystem(attacker, defender model.User) {
 	fmt.Printf("Gianca: [Health: %d, Damage Caused: %d]\n", attacker.Health, attackerDMG)
 	fmt.Printf("Lucho: [Health: %d, Damage Caused: %d]\n", defender.Health, defenderDMG)
 
-	winner := If(attacker.Health > 0, attacker.Name, defender.Name)
+	winner := If(attacker.Health > 0, attacker.Username, defender.Username)
 	fmt.Println("The winner is: ", winner)
 }
