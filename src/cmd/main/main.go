@@ -45,6 +45,31 @@ func getUserByName(w http.ResponseWriter, r *http.Request) {
 	w.Write(data)
 }
 
+func addUser(w http.ResponseWriter, r *http.Request) {
+	db := database.NewPostgreSQL()
+
+	if db == nil {
+		fmt.Println("Error connecting to database")
+		os.Exit(0)
+	}
+
+	var user model.User
+	json.NewDecoder(r.Body).Decode(&user)
+
+	user.Level = 1
+	user.Experience = 0
+	user.ExperienceToNextLevel = 100
+	user.DamageMax = 10
+	user.DamageMin = 5
+	user.Health = 100
+	user.DefenseMax = 10
+	user.DefenseMin = 5
+	db.Save(&user)
+
+	data, _ := json.Marshal(user)
+	w.Write(data)
+}
+
 func main() {
 
 	r := chi.NewRouter()
@@ -52,38 +77,11 @@ func main() {
 	r.Route("/users", func(r chi.Router) {
 		r.Get("/", getAllUsers)
 		r.Get("/{name}", getUserByName)
+		r.Post("/", addUser)
 	})
 
 	http.ListenAndServe(":8080", r)
 
-	// CREATE USER:
-	/*
-		db.Create(&model.User{
-			Username: "gianca",
-			Password: "test",
-			Level: 1,
-			Experience: 0,
-			ExperienceToNextLevel: 100,
-			DamageMax: 10,
-			DamageMin: 5,
-			Health: 100,
-			DefenseMax: 10,
-			DefenseMin: 5,
-		})
-	*/
-
-	// Find users:
-	/*
-		var users []model.User
-		db.Find(&users)
-	*/
-
-	// Find user by id:
-	/*
-		var user model.User
-		db.First(&user, 1)
-		fmt.Println(user)
-	*/
 
 	// var user1, user2 model.User
 	// db.First(&user1, "username = ?", "gianca")

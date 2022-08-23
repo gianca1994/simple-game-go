@@ -44,11 +44,5 @@ func NewPostgreSQL() *gorm.DB {
 		return nil
 	}
 
-	/*
-		userSearch := model.User{}
-		db.Find(&test, 1)
-		fmt.Println(test.Name)
-	*/
-
 	return db
 }
