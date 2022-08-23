@@ -21,12 +21,16 @@ func main() {
 	// CREATE USER:
 	/*
 		db.Create(&model.User{
-			Name:       "gianca",
-			DamageMax:  10,
-			DamageMin:  5,
-			Health:     50,
-			DefenseMax: 3,
-			DefenseMin: 1,
+			Username: "gianca",
+			Password: "test",
+			Level: 1,
+			Experience: 0,
+			ExperienceToNextLevel: 100,
+			DamageMax: 10,
+			DamageMin: 5,
+			Health: 100,
+			DefenseMax: 10,
+			DefenseMin: 5,
 		})
 	*/
 
@@ -44,8 +48,8 @@ func main() {
 	*/
 
 	var user1, user2 model.User
-	db.First(&user1, "name = ?", "Gianca")
-	db.First(&user2, "name = ?", "lucho")
+	db.First(&user1, "username = ?", "gianca")
+	db.First(&user2, "username = ?", "lucho")
 
 	service.CombatSystem(user1, user2)
 }
