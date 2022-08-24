@@ -18,4 +18,3 @@ type User struct {
 	DefenseMax            int    `gorm:"not null" json:"defense_max"`
 	DefenseMin            int    `gorm:"not null" json:"defense_min"`
 }
-
