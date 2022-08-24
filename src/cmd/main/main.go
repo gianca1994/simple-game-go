@@ -1,17 +1,33 @@
 package main
 
 import (
+	"fmt"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/jwtauth/v5"
 	_ "github.com/lib/pq"
 	"net/http"
 	"simple-game-golang/src/cmd/routes"
 )
 
-func main() {
+var tokenAuth *jwtauth.JWTAuth
 
+func main() {
+	port := ":8080"
+	fmt.Printf("Starting server on %v\n", port)
+	http.ListenAndServe(port, routerHandler())
+}
+
+func routerHandler() http.Handler {
 	r := chi.NewRouter()
 
+	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Hello World!!"))
+	})
+
 	r.Route("/users", func(r chi.Router) {
+		// r.Use(jwtauth.Verifier(tokenAuth))
+		// r.Use(jwtauth.Authenticator)
+
 		r.Get("/", routes.GetAllUsers)
 		r.Get("/{name}", routes.GetUserByName)
 	})
@@ -21,11 +37,5 @@ func main() {
 		r.Post("/register", routes.Register)
 	})
 
-	http.ListenAndServe(":8080", r)
-
-	// var user1, user2 model.User
-	// db.First(&user1, "username = ?", "gianca")
-	// db.First(&user2, "username = ?", "lucho")
-
-	// service.CombatSystem(user1, user2)
+	return r
 }
