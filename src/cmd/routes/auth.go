@@ -31,7 +31,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	db.Where("username = ?", user.Username).Find(&user)
 
 	if CheckPasswordHash(user.Password, passwordReq) {
-		tokenAuth = jwtauth.New("HS256", []byte("secret"), nil)
+		tokenAuth = jwtauth.New("HS512", []byte("secret"), nil)
 		_, tokenString, _ := tokenAuth.Encode(map[string]interface{}{"id": user.ID})
 
 		w.Header().Set("Content-Type", "application/json")

@@ -35,11 +35,11 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 func GetUserByName(w http.ResponseWriter, r *http.Request) {
 	db := DbConnection()
 
-	name := chi.URLParam(r, "name")
 	var user model.User
-	db.Where("username = ?", name).First(&user)
+	db.Where("username = ?", chi.URLParam(r, "name")).First(&user)
 	data, _ := json.Marshal(user)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(data)
 }
+
