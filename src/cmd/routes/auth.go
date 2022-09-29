@@ -2,13 +2,11 @@ package routes
 
 import (
 	"encoding/json"
-	"github.com/go-chi/jwtauth/v5"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
+	jwt_auth "simple-game-golang/src/internal/jwt_bearer"
 	"simple-game-golang/src/model"
 )
-
-var tokenAuth *jwtauth.JWTAuth
 
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
@@ -26,18 +24,20 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	var user model.User
 
 	json.NewDecoder(r.Body).Decode(&user)
-	passwordReq := user.Password
+	var userDB model.User
+	db.Where("username = ?", user.Username).First(&userDB)
 
-	db.Where("username = ?", user.Username).Find(&user)
+	if CheckPasswordHash(userDB.Password, user.Password) {
+		token := jwt_auth.GenerateToken(userDB)
 
-	if CheckPasswordHash(user.Password, passwordReq) {
-		tokenAuth = jwtauth.New("HS512", []byte("secret"), nil)
-		_, tokenString, _ := tokenAuth.Encode(map[string]interface{}{"id": user.ID})
+		data, _ := json.Marshal(map[string]string{
+			"token": token,
+		})
 
 		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(`{"token": "` + tokenString + `"}`))
+		w.Write(data)
 	} else {
-		w.Write([]byte("Incorrect password"))
+		w.Write([]byte("Invalid username or password"))
 	}
 }
 
@@ -45,19 +45,18 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	db := DbConnection()
 
 	var user model.User
+	var UserRegisterDTO model.UserRegisterDTO
 
-	json.NewDecoder(r.Body).Decode(&user)
-	hash, _ := HashPassword(user.Password)
+	json.NewDecoder(r.Body).Decode(&UserRegisterDTO)
+
+	user.Username = UserRegisterDTO.Username
+	hash, _ := HashPassword(UserRegisterDTO.Password)
 	user.Password = hash
-	user.Level = 1
-	user.Experience = 0
-	user.ExperienceToNextLevel = 100
-	user.DamageMax = 10
-	user.DamageMin = 5
-	user.Health = 100
-	user.DefenseMax = 10
-	user.DefenseMin = 5
+
+
 	db.Create(&user)
 
 	w.Write([]byte("User created successfully"))
 }
+
+
