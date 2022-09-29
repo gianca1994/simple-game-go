@@ -42,3 +42,12 @@ func ExtractClaims(tokenStr string) (jwt.MapClaims, bool) {
 		return nil, false
 	}
 }
+
+func TokenGetClaims(token string) jwt.MapClaims {
+	claims, _ := ExtractClaims(token)
+
+	if claims == nil {
+		return nil
+	}
+	return claims
+}

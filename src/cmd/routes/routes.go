@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/jwtauth/v5"
-	"github.com/golang-jwt/jwt"
 	"gorm.io/gorm"
 	"net/http"
 	"os"
@@ -24,14 +23,7 @@ func DbConnection() *gorm.DB {
 	return db
 }
 
-func TokenGetClaims(token string) jwt.MapClaims {
-	claims, _ := jwt_auth.ExtractClaims(token)
 
-	if claims == nil {
-		return nil
-	}
-	return claims
-}
 
 func Home(w http.ResponseWriter, r *http.Request) {
 	port := ":8080"
@@ -48,7 +40,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
-	claims := TokenGetClaims(jwtauth.TokenFromHeader(r))
+	claims := jwt_auth.TokenGetClaims(jwtauth.TokenFromHeader(r))
 
 	if claims == nil {
 		w.Write([]byte("Invalid token"))
@@ -78,7 +70,7 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUserByName(w http.ResponseWriter, r *http.Request) {
-	claims := TokenGetClaims(jwtauth.TokenFromHeader(r))
+	claims := jwt_auth.TokenGetClaims(jwtauth.TokenFromHeader(r))
 
 	if claims == nil {
 		w.Write([]byte("Invalid token"))
@@ -109,7 +101,7 @@ func GetUserByName(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetProfile(w http.ResponseWriter, r *http.Request) {
-	claims := TokenGetClaims(jwtauth.TokenFromHeader(r))
+	claims := jwt_auth.TokenGetClaims(jwtauth.TokenFromHeader(r))
 
 	if claims == nil {
 		w.Write([]byte("Invalid token"))
