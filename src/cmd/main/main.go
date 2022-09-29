@@ -3,29 +3,24 @@ package main
 import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/jwtauth/v5"
 	_ "github.com/lib/pq"
 	"net/http"
 	"simple-game-golang/src/cmd/routes"
+	"simple-game-golang/src/internal/database"
 )
-
-var tokenAuth *jwtauth.JWTAuth
 
 func main() {
 	port := ":8080"
 	fmt.Printf("Starting server on %v\n", port)
 
-	// database.NewPostgreSQL() => Migration table users
-
+	database.NewPostgreSQL()
 	http.ListenAndServe(port, routerHandler())
 }
 
 func routerHandler() http.Handler {
 	r := chi.NewRouter()
 
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello World!!"))
-	})
+	r.Get("/", routes.Home)
 
 	r.Route("/users", func(r chi.Router) {
 		r.Get("/", routes.GetAllUsers)
