@@ -6,6 +6,8 @@ import (
 	"simple-game-golang/src/model"
 )
 
+//TODO: Refactor this to use a map instead of a slice
+
 func CombatSystem(attacker, defender model.User) {
 	roundCounter := 0
 	var attackerDMG, defenderDMG = 0, 0
