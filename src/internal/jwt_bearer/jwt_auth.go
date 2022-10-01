@@ -8,24 +8,28 @@ import (
 	"time"
 )
 
-const secretJWTKey = "e18924e1982e4wqa4sd89asd"
+const (
+	SECRET_JWT_KEY     = "e18924e1982e4wqa4sd89asd"
+	JWT_EXPIRE_MINUTES = 60
+	JWT_ALGORITHM      = "HS512"
+)
 
 func GenerateToken(user model.User) string {
 	claims := jwt.MapClaims{
 		"user_id":  user.Id,
 		"username": user.Username,
-		"role":    user.Role,
+		"role":     user.Role,
 	}
-	jwtauth.SetExpiry(claims, time.Now().Add(time.Minute*60))
+	jwtauth.SetExpiry(claims, time.Now().Add(time.Minute*JWT_EXPIRE_MINUTES))
 	jwtauth.SetIssuedAt(claims, time.Now())
 
-	_, token, _ := jwtauth.New("HS512", []byte(secretJWTKey), nil).Encode(claims)
+	_, token, _ := jwtauth.New(JWT_ALGORITHM, []byte(SECRET_JWT_KEY), nil).Encode(claims)
 
 	return token
 }
 
 func ExtractClaims(tokenStr string) (jwt.MapClaims, bool) {
-	hmacSecret := []byte(secretJWTKey)
+	hmacSecret := []byte(SECRET_JWT_KEY)
 	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
 		return hmacSecret, nil
 	})
